@@ -4,6 +4,7 @@ import sys
 import sqlite3
 
 passwordRequired = False
+password = "124-122-131-136-125-126-131-86-89-78-77-78"
 
 def setupDatabase():
     DB_NAME = 'database'
@@ -73,7 +74,7 @@ def sendAccountManagementText():
     sendTitle()
     if passwordRequired == True:
         password = input("Enter password: ")
-        if not password == decrypt("124-122-131-136-125-126-131-86-89-78-77-78"):
+        if not password == decrypt(password):
             sendTitle()
             print(f'Incorrect password. Tool will now reload.')
             time.sleep(3)

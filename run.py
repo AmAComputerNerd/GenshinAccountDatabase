@@ -190,11 +190,12 @@ try:
                 elif sub.lower() == "file":
                     f = open("account.txt", "w")
                     for account in response:
-                        email, password, fiveStar, tags = response
+                        email, password, fiveStar, tags = account
                         f.write(f'Email: {email}\n')
                         f.write(f'Password: {password}\n')
                         f.write(f'Tags: [{tags}]\n')
                         f.write(f'----------\n')
+                    f.close()
                     func.sendTitle()
                     print(f'Success! Returning to the main menu in 3 seconds...')
                     time.sleep(3)
