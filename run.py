@@ -172,6 +172,7 @@ try:
                 sub = input(f'Enter sub-command (print | file | cancel): ')
                 response = func.listAccounts()
                 if sub.lower() == "print":
+                    func.sendTitle()
                     first = True
                     for account in response:
                         email, password, fiveStar, tags = account

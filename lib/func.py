@@ -160,7 +160,9 @@ def editAccountEmail(currentEmail, newEmail):
     response = db_cursor.fetchone()
     if not response:
         return
-    db_cursor.execute("UPDATE registered SET email=? WHERE email=?", (currentEmail, newEmail,))
+    temp, password, fiveStar, tags = response
+    db_cursor.execute("INSERT INTO registered VALUES (?, ?, ?, ?)", (newEmail, password, fiveStar, tags,))
+    db_cursor.execute("DELETE FROM registered WHERE email=?", (currentEmail,))
     db.commit()
 
 def editAccountPassword(email, password):
@@ -188,7 +190,8 @@ def addNewAccountTags(email, tags):
     response = db_cursor.fetchone()
     if not response:
         return
-    email1, password, fiveStar, oldTags = response
-    tagsCondensed = oldTags + " " + tagsCondensed
+    email, password, fiveStar, oldTags = response
+    if not oldTags == "":
+        tagsCondensed = oldTags + " " + tagsCondensed
     db_cursor.execute("UPDATE registered SET tags=? WHERE email=?", (tagsCondensed, email,))
     db.commit()
