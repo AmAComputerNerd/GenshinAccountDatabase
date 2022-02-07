@@ -20,7 +20,7 @@ def processCommand(text):
         if len(args) <= 1: return __invalid__()
         accounts = func.searchAccounts(args[1])
         func.sendTitle()
-        if " " in accounts[0]: print(f'There are a total of 0 accounts that match your query!')
+        if " " in accounts[0][0]: print(f'There are a total of 0 accounts that match your query!')
         else: print(f'There are a total of {len(accounts)} account(s) that match your query!')
 
         processSub("search", input(f'Enter sub-command (file | print | exit): '), accounts)
@@ -35,7 +35,7 @@ def processCommand(text):
     elif args[0].lower() == "list":
         func.sendTitle()
         accounts = func.listAccounts(None)
-        if " " in accounts[0]: print(f'There are a total of 0 registered accounts!')
+        if " " in accounts[0][0]: print(f'There are a total of 0 registered accounts!')
         else: print(f'There are a total of {len(accounts)} registered account(s)!')
 
         processSub("list", input(f'Enter sub-command (file | print | exit): '), accounts)
