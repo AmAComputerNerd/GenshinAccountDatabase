@@ -3,8 +3,62 @@ import time
 import sys
 import sqlite3
 
+# ------------------------------------------ #
+#             SETTINGS VARIABLES             #
+# ------------------------------------------ # 
+
 passwordRequired = False
-password = "124-122-131-136-125-126-131-86-89-78-77-78"
+password = "124-122-131-136-125-126-131-86-89-78-77-78" # to make a new password, encrypt it through using the command 'encrypt [newPassword]'
+
+# ----------------------------------------- #
+#             STARTUP FUNCTIONS             #
+# ----------------------------------------- # 
+
+def startingText():
+    print("""
+  /$$$$$$                                /$$       /$$                          
+ /$$__  $$                              | $$      |__/                          
+| $$  \__/  /$$$$$$  /$$$$$$$   /$$$$$$$| $$$$$$$  /$$ /$$$$$$$                 
+| $$ /$$$$ /$$__  $$| $$__  $$ /$$_____/| $$__  $$| $$| $$__  $$                
+| $$|_  $$| $$$$$$$$| $$  \ $$|  $$$$$$ | $$  \ $$| $$| $$  \ $$                
+| $$  \ $$| $$_____/| $$  | $$ \____  $$| $$  | $$| $$| $$  | $$                
+|  $$$$$$/|  $$$$$$$| $$  | $$ /$$$$$$$/| $$  | $$| $$| $$  | $$                
+ \______/  \_______/|__/  |__/|_______/ |__/  |__/|__/|__/  |__/                
+
+
+
+  /$$$$$$                                                      /$$              
+ /$$__  $$                                                    | $$              
+| $$  \ $$  /$$$$$$$  /$$$$$$$  /$$$$$$  /$$   /$$ /$$$$$$$  /$$$$$$            
+| $$$$$$$$ /$$_____/ /$$_____/ /$$__  $$| $$  | $$| $$__  $$|_  $$_/            
+| $$__  $$| $$      | $$      | $$  \ $$| $$  | $$| $$  \ $$  | $$              
+| $$  | $$| $$      | $$      | $$  | $$| $$  | $$| $$  | $$  | $$ /$$          
+| $$  | $$|  $$$$$$$|  $$$$$$$|  $$$$$$/|  $$$$$$/| $$  | $$  |  $$$$/          
+|__/  |__/ \_______/ \_______/ \______/  \______/ |__/  |__/   \___/            
+                                                                                
+                                                                                
+                                                                                
+ /$$$$$$$              /$$               /$$                                    
+| $$__  $$            | $$              | $$                                    
+| $$  \ $$  /$$$$$$  /$$$$$$    /$$$$$$ | $$$$$$$   /$$$$$$   /$$$$$$$  /$$$$$$ 
+| $$  | $$ |____  $$|_  $$_/   |____  $$| $$__  $$ |____  $$ /$$_____/ /$$__  $$
+| $$  | $$  /$$$$$$$  | $$      /$$$$$$$| $$  \ $$  /$$$$$$$|  $$$$$$ | $$$$$$$$
+| $$  | $$ /$$__  $$  | $$ /$$ /$$__  $$| $$  | $$ /$$__  $$ \____  $$| $$_____/
+| $$$$$$$/|  $$$$$$$  |  $$$$/|  $$$$$$$| $$$$$$$/|  $$$$$$$ /$$$$$$$/|  $$$$$$$
+|_______/  \_______/   \___/   \_______/|_______/  \_______/|_______/  \_______/
+                                      
+                                      V.2
+----------------------------------------------------------------------------------
+By SimplyAmazing | Database Application\n
+Loading.... -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+    """)
+    time.sleep(3)
+
+def createAccountFile():
+    try:
+        return open("account.txt", "x")
+    except Exception as e:
+        return None
 
 def setupDatabase():
     DB_NAME = 'database'
@@ -21,7 +75,12 @@ def setupDatabase():
     """)
     return db, db_cursor
 
+# Local variable setting.
 db, db_cursor = setupDatabase()
+
+# ----------------------------------------- #
+#             TEXT MANIPULATION             #
+# ----------------------------------------- # 
 
 def encrypt(s):
     newString = ""
@@ -41,9 +100,13 @@ def splitArgs(inp):
     args = inp.split(" ")
     return args
 
+# -------------------------------------- #
+#             MENU FUNCTIONS             #
+# -------------------------------------- # 
+
 def sendTitle():
     os.system(f'cmd /c "cls')
-    print(f'GENSHIN ACCOUNT DATABASE')
+    print(f'GENSHIN ACCOUNT DATABASE (v2.0)')
     print(f'-----------------------------')
 
 def sendStartingText():
@@ -61,9 +124,9 @@ def sendAccountFinderText():
     sendTitle()
     print(f'Please input an action.')
     print(f'  - get [email] | Get an account directly by it\'s registered email.')
-    print(f'  - search [tag] | Search accounts by character.')
-    print(f'  - count | Get a count of the total registered accounts.')
-    print(f'  - list | Get a list of all registered accounts.')
+    print(f'  - search [[tags]] | Search accounts by character.')
+    print(f'  - count ([tags]) | Get a count of the total registered accounts.')
+    print(f'  - list ("emails") | Get a list of all registered accounts.')
     print(f'  - exit | Go back to the main screen.')
     print(f'-----------')
 
@@ -92,6 +155,10 @@ def sendAccountManagementText():
 
     value = input(" > ")
     return value
+
+# ---------------------------------------------- #
+#             PYTHON / CMD FUNCTIONS             #
+# ---------------------------------------------- # 
 
 def reloadTool():
     os.startfile("run.py")
@@ -124,12 +191,12 @@ def searchAccounts(tag):
             if tag.lower() == tag1.lower(): toReturn.append(account)
     return toReturn
 
-def countAccounts():
+def countAccounts(tags = None):
     db_cursor.execute("SELECT COUNT(*) FROM registered")
     response = db_cursor.fetchone()
     return int(response[0])
 
-def listAccounts():
+def listAccounts(option = None):
     db_cursor.execute("SELECT * FROM registered")
     response = db_cursor.fetchall()
     if not response:
